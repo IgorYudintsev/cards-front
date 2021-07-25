@@ -1,9 +1,14 @@
 import React, {useEffect} from 'react';
 import styles from './Registration.module.css'
+import {AuthAPI} from "../API/AuthAPI";
 
 export const Registration = () => {
     useEffect(()=>{
-        console.log('RG')
+        AuthAPI.getPing()
+            .then((res)=>{
+                console.log(res)
+            })
+
     })
     return (
         <div className={styles.general}>
