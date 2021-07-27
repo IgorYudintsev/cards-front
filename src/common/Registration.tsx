@@ -1,26 +1,34 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Registration.module.css'
 import {AuthAPI} from "../API/AuthAPI";
 import {Button, FormControl, FormGroup, Grid, TextField} from "@material-ui/core";
 import {useFormik} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStoreType, store} from "../redux/store";
+import {AuthRegisterThunk} from "../reducers/RegistrationReducer";
+import {Redirect} from "react-router-dom";
 
 
 export const Registration = () => {
-    useEffect(() => {
-        AuthAPI.getPing()
-            .then((res) => {
-                console.log(res)
-            })
+    let [error, setError] = useState(false)
+    let [redirect, setRedirect] = useState(false)
+    let dispatch = useDispatch();
+    let AuthData=useSelector<AppStoreType>(state =>state.registration)
+    console.log(AuthData)
 
-    })
+    // useEffect(() => {
+    //     AuthAPI.getPing()
+    //         .then((res) => {
+    //             console.log(res)
+    //         })
+    //
+    // })
 
     type FormikErrorType = {
         email?: string
         password?: string
         password2?: string
     }
-
-
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -42,12 +50,16 @@ export const Registration = () => {
 
         onSubmit: values => {
             if (values.password === values.password2) {
-                alert(JSON.stringify(values));
+                // let items = JSON.stringify(values);
+                // console.log(values.email, values.password)
+                dispatch(AuthRegisterThunk(values.email, values.password, setError, setRedirect))
             }
         },
     })
 
-
+    if (redirect) {
+        return <Redirect to={'/login'}/>
+    }
     return (
         <div className={styles.general}>
             <h1>REGISTRATION</h1>
@@ -60,20 +72,17 @@ export const Registration = () => {
                                 <FormGroup>
                                     <TextField
                                         label="Email" margin="normal"
-                                        name='email' onChange={formik.handleChange}
-                                        value={formik.values.email}
+                                        {...formik.getFieldProps('email')}
                                     />
                                     {formik.errors.email ?
                                         <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
                                     <TextField
                                         type="password" label="Password" margin="normal"
-                                        name='password' onChange={formik.handleChange}
-                                        value={formik.values.password}
+                                        {...formik.getFieldProps('password')}
                                     />
                                     <TextField
                                         type="password" label="Password" margin="normal"
-                                        name='password2' onChange={formik.handleChange}
-                                        value={formik.values.password2}
+                                        {...formik.getFieldProps('password2')}
                                         placeholder={'enter the same password'}
                                     />
                                     {formik.errors.password2 ?
@@ -84,8 +93,11 @@ export const Registration = () => {
                             </FormControl>
                         </form>
                     </div>
+                    {error && <div className={styles.error}>Email already exists, or your Password must be more than 7
+                        characters...</div>}
                 </Grid>
             </Grid>
+
         </div>
     )
 }
