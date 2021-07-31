@@ -6,15 +6,15 @@ import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, store} from "../redux/store";
 import {AuthRegisterThunk} from "../reducers/RegistrationReducer";
-import {Redirect} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
+import {Login} from "./Login";
 
 
 export const Registration = () => {
     let [error, setError] = useState(false)
     let [redirect, setRedirect] = useState(false)
     let dispatch = useDispatch();
-    let AuthData=useSelector<AppStoreType>(state =>state.registration)
-    console.log(AuthData)
+    let AuthData = useSelector<AppStoreType>(state => state.registration)
 
     // useEffect(() => {
     //     AuthAPI.getPing()
@@ -60,6 +60,7 @@ export const Registration = () => {
     if (redirect) {
         return <Redirect to={'/login'}/>
     }
+
     return (
         <div className={styles.general}>
             <h1>REGISTRATION</h1>
@@ -97,7 +98,6 @@ export const Registration = () => {
                         characters...</div>}
                 </Grid>
             </Grid>
-
         </div>
     )
 }

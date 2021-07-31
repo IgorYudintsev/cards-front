@@ -19,6 +19,21 @@ export const AuthAPI = {
 
 
 type RegistrationType = {
-    addedUser: {}
+    addedUser: resDataAddedUserType
     error?: string,
 }
+
+export type resDataAddedUserType={
+    created: Date
+    email: string
+    isAdmin: boolean
+    name: string
+    publicCardPacksCount: number
+    rememberMe: boolean
+    updated: Date
+    verified: boolean
+    __v: number
+    _id: string
+}
+
+
