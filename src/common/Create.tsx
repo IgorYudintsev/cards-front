@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import styles from './Registration.module.css'
 
-export const Create = () => {
-    useEffect(()=>{
+export const Create = React.memo(() => {
+    useEffect(() => {
         console.log('RG')
     })
     return (
@@ -10,4 +10,4 @@ export const Create = () => {
             <h1>Create</h1>
         </div>
     )
-}
+})

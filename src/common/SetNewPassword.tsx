@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import styles from './Registration.module.css'
 
-export const SetNewPassword = () => {
+export const  SetNewPassword = React.memo( () => {
     useEffect(()=>{
         console.log('RG')
     })
@@ -10,4 +10,4 @@ export const SetNewPassword = () => {
             <h1>SetNewPassword</h1>
         </div>
     )
-}
+})

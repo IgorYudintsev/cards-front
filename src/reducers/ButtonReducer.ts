@@ -1,51 +1,29 @@
 import {Dispatch} from "redux";
 import {AuthAPI, resDataAddedUserType} from "../API/AuthAPI";
 
-let initialState: Array<string> = []
-export const RegistrationReducer = (state = initialState, action: AuthRegisterACType) => {
+let initialState: string = ''
+export const ButtonReducer = (state = initialState, action: generalType) => {
     switch (action.type) {
-        case 'AUTH-REGISTER': {
-            let newState = [action.data,...state];
-            console.log(newState)
+        case 'SET-REDIRECT': {
+            let newState = state;
+            newState = action.redirect
             return newState;
         }
+
         default:
             return state
     }
 }
+type generalType=ButtonACType
 
-type AuthRegisterACType = ReturnType<typeof AuthRegisterAC>
-let AuthRegisterAC = (data: resDataAddedUserType) => {
+type ButtonACType = ReturnType<typeof ButtonAC>
+export let ButtonAC = (redirect: string) => {
     return {
-        type: 'AUTH-REGISTER',
-        data:data
+        type: 'SET-REDIRECT',
+        redirect
     } as const
 }
 
-export let AuthRegisterThunk = (email: string, password: string, setError: (value: boolean) => void, setRedirect: (value: boolean) => void) => (dispatch: Dispatch) => {
-    AuthAPI.authRegister(email, password)
-        .then((res) => {
-            console.log(res.data.addedUser)
-            dispatch(AuthRegisterAC(res.data.addedUser))
-            setRedirect(true)
-            setError(false)
-        })
-        .catch((err) => {
-            console.log(err)
-            setError(true)
-            setRedirect(false)
-        })
-}
 
 
-// export let AuthRegisterThunk = (email: string, password: string, setError: (value: boolean) => void, setRedirect: (value: boolean) => void) => async (dispatch: Dispatch) => {
-//     try {
-//         let res = AuthAPI.authRegister(email, password)
-//         setError(false)
-//         setRedirect(true)
-//         console.log(res)
-//     } catch {
-//         setError(true)
-//         setRedirect(false)
-//     }
-// }
+

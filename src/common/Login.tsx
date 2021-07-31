@@ -4,16 +4,16 @@ import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, Grid, TextFi
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../redux/store";
 import {useFormik} from "formik";
-import {AuthRegisterThunk} from "../reducers/RegistrationReducer";
 import {Redirect} from "react-router-dom";
 import {AuthLoginThunk} from "../reducers/LoginReducer";
+import {ButtonAC} from "../reducers/ButtonReducer";
 
-export const Login = () => {
+export const Login = React.memo( () => {
     let [error, setError] = useState(false)
     let [redirect, setRedirect] = useState(false)
     let dispatch = useDispatch();
     let LoginData=useSelector<AppStoreType>(state =>state.login)
-    // console.log(LoginData)
+
     type FormikErrorType = {
         email?: string
         password?: string
@@ -37,13 +37,14 @@ export const Login = () => {
             }
             return errors;
         },
-
         onSubmit: values => {
             dispatch(AuthLoginThunk(values.email, values.password, values.checkBox, setError, setRedirect))
+            dispatch(ButtonAC(''))
         },
     })
 
     if (redirect) {
+        dispatch(ButtonAC('Profile'))
         return <Redirect to={'/profile'}/>
     }
     return (
@@ -86,3 +87,4 @@ export const Login = () => {
         </div>
     )
 }
+)

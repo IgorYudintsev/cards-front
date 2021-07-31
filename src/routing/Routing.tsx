@@ -1,6 +1,6 @@
 import React from 'react';
 import {Registration} from "../common/Registration";
-import {Redirect, Route,Switch} from 'react-router-dom'
+import {Redirect, Route, Switch} from 'react-router-dom'
 import {Login} from "../common/Login";
 import {Create} from "../common/Create";
 import {Profile} from "../common/Profile";
@@ -18,9 +18,9 @@ export const Routing = () => {
                 <Route path={'/create'} render={() => <Create/>}/>
                 <Route path={'/profile'} render={() => <Profile/>}/>
                 <Route path={'/404'} render={() => <NotFound/>}/>
-                <Redirect from={'*'} to={'/404'}/>
                 <Route path={'/recovery'} render={() => <RecoveryPassword/>}/>
                 <Route path={'/newPas'} render={() => <SetNewPassword/>}/>
+                <Redirect from={'*'} to={'/404'}/>
             </Switch>
         </div>
     )
