@@ -23,14 +23,13 @@ export const ButtonComponent = (props: ButtonType) => {
         dispatch(ButtonAC(''))
     }, [props.title])
 
-    console.log(props.title)
-    console.log(redirect)
     return (
         <span>
             <button
                 onClick={onClickHandler}
                 className={
-                    (props.colorButton === props.title  && redirect!=='Profile') || (props.title === redirect )
+                    (props.colorButton === props.title && redirect !== 'Profile' && redirect !== 'Login')
+                    || (props.title === redirect)
                         ? styles.yellow
                         : styles.button}>
                     <NavLink className={styles.navi} to={`${props.to}`}>
