@@ -11,6 +11,7 @@ import {ButtonAC} from "../reducers/ButtonReducer";
 export const Login = React.memo(() => {
         let [error, setError] = useState(false)
         let [redirect, setRedirect] = useState(false)
+        let [ForgotPass, setForgotPass] = useState(false)
         let dispatch = useDispatch();
         let LoginData = useSelector<AppStoreType, any[]>(state => state.login)
 
@@ -43,6 +44,10 @@ export const Login = React.memo(() => {
             },
         })
 
+        let ForgotPassFoo = () => {
+            setForgotPass(true)
+        }
+
         useEffect(() => {
             if (LoginData.length > 0) {
                 setRedirect(true)
@@ -53,6 +58,7 @@ export const Login = React.memo(() => {
             <div className={styles.general}>
                 <h1>LOGIN</h1>
                 {redirect && <Redirect to={'/profile'}/>}
+                {ForgotPass && <Redirect to={'/recovery'}/>}
                 <Grid container justify="center">
                     <Grid item xs={4}>
                         <div className={styles.border}>
@@ -78,13 +84,17 @@ export const Login = React.memo(() => {
                                         />
 
                                         <Button className={styles.Button} type={'submit'} variant={'contained'}
-                                                color={'primary'}>Send</Button>
+                                                color={'primary'}>Sign in</Button>
+
                                     </FormGroup>
                                 </FormControl>
                             </form>
                         </div>
                         {error && <div className={styles.error}>Email already exists, or your Password must be more than 7
                             characters...</div>}
+                        <Button onClick={ForgotPassFoo} className={styles.forgotPassword} type={'submit'}
+                                variant={'outlined'}
+                                color={'secondary'}>forgot your password</Button>
                     </Grid>
                 </Grid>
             </div>

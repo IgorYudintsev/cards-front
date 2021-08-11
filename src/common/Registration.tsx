@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './Registration.module.css'
-import {AuthAPI} from "../API/AuthAPI";
+
 import {Button, FormControl, FormGroup, Grid, TextField} from "@material-ui/core";
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";

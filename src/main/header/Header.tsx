@@ -38,12 +38,12 @@ export const Header = () => {
                              colorButton={colorButton}/>
             <ButtonComponent title={'Profile'} to={'/profile'} changeButtonColor={changeButtonColor}
                              colorButton={colorButton}/>
-            <ButtonComponent title={'NotFound'} to={'/404'} changeButtonColor={changeButtonColor}
-                             colorButton={colorButton}/>
-            <ButtonComponent title={'SetNewPassword'} to={'/recovery'} changeButtonColor={changeButtonColor}
-                             colorButton={colorButton}/>
-            <ButtonComponent title={'RecoveryPassword'} to={'/newPas'} changeButtonColor={changeButtonColor}
-                             colorButton={colorButton}/>
+            {/*<ButtonComponent title={'NotFound'} to={'/404'} changeButtonColor={changeButtonColor}*/}
+            {/*                 colorButton={colorButton}/>*/}
+            {/*<ButtonComponent title={'SetNewPassword'} to={'/recovery'} changeButtonColor={changeButtonColor}*/}
+            {/*                 colorButton={colorButton}/>*/}
+            {/*<ButtonComponent title={'RecoveryPassword'} to={'/newPas'} changeButtonColor={changeButtonColor}*/}
+            {/*                 colorButton={colorButton}/>*/}
             {LogOUT && <span onClick={logOiutHandler} className={styles.logOut}>LogOUT</span>}
         </div>
     )

@@ -6,6 +6,14 @@
     top: 25px;
 }
 
+.forgotPassword{
+    top:70px;
+}
+
+.Textarea{
+    margin-top: 45px;
+}
+
 .error{
     margin-top: 30px;
     color: red;
