@@ -9,8 +9,8 @@ export const CardsPackReducer = (state = initialState, action: GeneralType) => {
             newState = action.cardPacks
             return newState
         }
-        case "CREATE-CARDS-PACK":{
-            let newState = [action.cardPacks,...state];
+        case "CREATE-CARDS-PACK": {
+            let newState = [action.cardPacks, ...state];
             return newState
         }
         default:
@@ -34,13 +34,14 @@ export const getCardsPackThunk = () => (dispatch: Dispatch) => {
         )
 }
 
-type AddNewCardsPackACType=ReturnType<typeof AddNewCardsPackAC>
-export  const AddNewCardsPackAC=(cardPacks: Array<userType>)=>{
+type AddNewCardsPackACType = ReturnType<typeof AddNewCardsPackAC>
+export const AddNewCardsPackAC = (cardPacks: Array<userType>) => {
     return {type: 'CREATE-CARDS-PACK', cardPacks} as const
 }
-export const AddNewCardsPackThunk=()=>(dispatch:Dispatch)=>{
-     CardsApi.AddNewCardsPack().then((res)=>{
-         // console.log(res.data.newCardsPack)
-         dispatch(AddNewCardsPackAC(res.data.newCardsPack))
-     })
+export const AddNewCardsPackThunk = (setUserID: (setUser: string) => void) => (dispatch: Dispatch) => {
+    CardsApi.AddNewCardsPack().then((res) => {
+        setUserID(res.data.newCardsPack.user_id);
+        localStorage.setItem('userId',res.data.newCardsPack.user_id)
+        dispatch(AddNewCardsPackAC(res.data.newCardsPack))
+    })
 }

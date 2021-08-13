@@ -13,6 +13,10 @@
     width: 95%;
     height: 450px;
 }
+.header{
+    color:white;
+    margin-left: 25px;
+}
 
 .table{
     color:white;
@@ -25,3 +29,4 @@
 .table tr:nth-child(even) {
     background-color: skyblue;
 }
+

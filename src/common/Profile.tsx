@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './Profile.module.css'
 import {ButtonAC} from "../reducers/ButtonReducer";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,30 +11,32 @@ import {ButtonComponentForCards} from "../components/ButtonComponentForCards";
 
 
 export const Profile = React.memo(() => {
+        let [userID, setUserID] = useState('')
         let dispatch = useDispatch()
         let cardsPack = useSelector<AppStoreType, Array<userType>>(state => state.cardsPack)
-        useEffect(() => {
+        let UserIdFromLocalStorage= localStorage.getItem('userId')
+    useEffect(() => {
             dispatch(getCardsPackThunk())
         }, [])
 
         dispatch(ButtonAC('Profile'))//for yellow buuton
         let loginTrue: any = useSelector<AppStoreType>(state => state.login);
         if (loginTrue.length === 0) {
-            console.log('0');
             dispatch(ButtonAC('Login'))//for yellow buuton
             return <Redirect to={'/login'}/>
         }
 
         const AddNewCardsPack = () => {
-            dispatch(AddNewCardsPackThunk())
+            console.log(userID)
+            dispatch(AddNewCardsPackThunk(setUserID))
         }
 
 
         return (
             <div className={style.generalDiv}>
                 <div className={style.general}>
+                    <tr><h1 className={style.header}>Users cards / PROFILE</h1></tr>
                     <Table className={style.table}>
-                        <tr><h1>Users cards / PROFILE</h1></tr>
                         <ButtonComponentForCards title={'create CARDS pack'} callBack={AddNewCardsPack}/>
                         <tr className={style.tr}>
                             <td className={style.th}>id</td>
@@ -53,8 +55,9 @@ export const Profile = React.memo(() => {
                                     <td>{m.created}</td>
                                     <td>{m.name}</td>
                                     <td>{m.cardsCount}</td>
-                                    <td>UPDATE</td>
-                                    <td>DELETE</td>
+                                    <td>  <button disabled={UserIdFromLocalStorage===m.user_id ? false : true}>UPDATE</button></td>
+                                    <td><button disabled={UserIdFromLocalStorage===m.user_id ? false : true}>DELETE</button></td>
+
                                 </tr>
                             )
                         })}
