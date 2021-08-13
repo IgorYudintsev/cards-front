@@ -4,13 +4,13 @@ import styles from './Button.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../redux/store";
 import {ButtonAC} from "../reducers/ButtonReducer";
-import {Button} from "@material-ui/core";
+
 
 
 type ButtonType = {
     title: string
-    to: string
-    colorButton: string
+    to?: string
+    colorButton?: string
     changeButtonColor: (title: string) => void
 }
 
@@ -39,15 +39,3 @@ export const ButtonComponent = (props: ButtonType) => {
         </span>
     )
 }
-
-// return (
-//     <span>
-//             <button
-//                 onClick={onClickHandler }
-//                 className={props.colorButton === props.title||props.title===redirect ? styles.yellow : styles.button}>
-//                     <NavLink className={styles.navi} to={`${props.to}`}>
-//                         {props.title}
-//                     </NavLink>
-//                 </button>
-//         </span>
-// )
