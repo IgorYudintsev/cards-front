@@ -34,8 +34,8 @@ export const Header = () => {
                              colorButton={colorButton}/>
             <ButtonComponent title={'Login'} to={'/login'} changeButtonColor={changeButtonColor}
                              colorButton={colorButton}/>
-            <ButtonComponent title={'CreateAccount'} to={'/create'} changeButtonColor={changeButtonColor}
-                             colorButton={colorButton}/>
+            {/*<ButtonComponent title={'CreateAccount'} to={'/create'} changeButtonColor={changeButtonColor}*/}
+            {/*                 colorButton={colorButton}/>*/}
             <ButtonComponent title={'Profile'} to={'/profile'} changeButtonColor={changeButtonColor}
                              colorButton={colorButton}/>
             {/*<ButtonComponent title={'NotFound'} to={'/404'} changeButtonColor={changeButtonColor}*/}
