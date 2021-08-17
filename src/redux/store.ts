@@ -4,12 +4,14 @@ import {RegistrationReducer} from "../reducers/RegistrationReducer";
 import {LoginReducer} from "../reducers/LoginReducer";
 import {ButtonReducer} from "../reducers/ButtonReducer";
 import {CardsPackReducer} from "../reducers/CardsPackReducer";
+import {SearchPaginationFilterCPReducer} from "../reducers/SearchPaginationFilterCPReducer";
 
 const reducers = combineReducers({
     button:ButtonReducer,
     registration: RegistrationReducer,
     login:LoginReducer,
-    cardsPack:CardsPackReducer
+    cardsPack:CardsPackReducer,
+    // spfCardsPack:SearchPaginationFilterCPReducer
 })
 
 export const store = createStore(reducers, applyMiddleware(thunk))

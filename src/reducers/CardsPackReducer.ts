@@ -1,17 +1,35 @@
 import {Dispatch} from "redux";
-import {CardsApi, userType} from "../API/CardsApi";
+import {CardPacksType, CardsApi, userType} from "../API/CardsApi";
 
-let initialState: Array<userType> = []
-export const CardsPackReducer = (state = initialState, action: GeneralType) => {
+let initialState = {
+    cardPacks: [] as Array<userType>
+}
+export type InitialCardsPackReducerType = typeof initialState
+export const CardsPackReducer = (state = initialState, action: GeneralType)=> {
     switch (action.type) {
         case 'GET-CARDS-PACK': {
-            let newState = [...state];
+
+            let newState = {...state};
             newState = action.cardPacks
-            return newState
+            return newState;
+
+
+            // let newState = {...state};
+            // newState = {...state,cardPacks:action.cardPacks}
+            // newState = {...state,cardPacks:action.cardPacks.cardPacks}
+
         }
         case "CREATE-CARDS-PACK": {
-            let newState = [action.cardPacks, ...state];
-            return newState
+            return {
+                ...state,
+                cardPacks: [action.cardPacks, ...state.cardPacks]
+            }
+
+
+            // let newState = [action.cardPacks, ...state];
+            // // let newState = [action.cardPacks, ...state];
+            // return newState
+            return state
         }
         default:
             return state
@@ -21,15 +39,16 @@ export const CardsPackReducer = (state = initialState, action: GeneralType) => {
 type GeneralType = getCardsPackACType | AddNewCardsPackACType
 
 type getCardsPackACType = ReturnType<typeof getCardsPackAC>
-const getCardsPackAC = (cardPacks: Array<userType>) => {
+const getCardsPackAC = (cardPacks:CardPacksType) => {
     return {type: 'GET-CARDS-PACK', cardPacks} as const
 }
 
 export const getCardsPackThunk = () => (dispatch: Dispatch) => {
     CardsApi.GETCardsPack()
         .then((res) => {
-                dispatch(getCardsPackAC(res.data.cardPacks))
-                // console.log(res.data.cardPacks)
+                dispatch(getCardsPackAC(res.data))
+                // dispatch(getCardsPackAC(res.data.cardPacks))
+                console.log(res.data)
             }
         )
 }
