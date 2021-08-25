@@ -10,6 +10,9 @@ export const CardsApi = {
     GETCardsPack: (searchParams: SearchParamsType = {pageCount: 10}) => {
         return instance.get<CardPacksType>('cards/pack', {params: {...searchParams}})
     },
+    GETCardsPackForPagination: (pagePageCount: SearchParamsType = {}) => {
+        return instance.get<CardPacksType>('cards/pack', {params: {...pagePageCount}})
+    },
     AddNewCardsPack: () => {
         return instance.post('cards/pack', {cardsPack: {name:'It-patsan'}})
     },

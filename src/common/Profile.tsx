@@ -4,21 +4,57 @@ import {ButtonAC} from "../reducers/ButtonReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../redux/store";
 import {Redirect} from "react-router-dom";
-import {AddNewCardsPackThunk, getCardsPackThunk, InitialCardsPackReducerType} from "../reducers/CardsPackReducer";
-import {CardPacksType, CardsApi, userType} from "../API/CardsApi";
+import {
+    AddNewCardsPackThunk,
+    getCardsPackForPaginationThunk,
+    getCardsPackThunk,
+    InitialCardsPackReducerType
+} from "../reducers/CardsPackReducer";
 import {Table} from "@material-ui/core";
 import {ButtonComponentForCards} from "../components/ButtonComponentForCards";
+import {Pagination} from "../components/Pagination";
 
 
 export const Profile = React.memo(() => {
         let [userID, setUserID] = useState('')
         let dispatch = useDispatch()
         let cardsPack = useSelector<AppStoreType, InitialCardsPackReducerType>(state => state.cardsPack)
-        // let cardsPack = useSelector<AppStoreType, CardPacksType>(state => state.cardsPack)
-        // let cardsPack2 = useSelector<AppStoreType, CardPacksType>(state => state.cardsPack)
-        console.log(cardsPack)
-        let UserIdFromLocalStorage = localStorage.getItem('userId')
+        let maxPageFromServer = Math.ceil(cardsPack.cardPacksTotalCount / cardsPack.pageCount)//maxNumber of pages
 
+        let UserIdFromLocalStorage = localStorage.getItem('userId')//for disabled-enabled button
+
+        let [minPagePagination, setMinPagePagination] = useState(1)//for pagination
+        let [maxPagePagination, setMaxPagePagination] = useState(10)
+
+
+        const leftArrowForPaginationHandler = () => {
+            console.log(cardsPack)
+            console.log(`minPagePagination:${minPagePagination}`)
+            console.log(`maxPagePagination:${maxPagePagination}`)
+            console.log(`maxPageFromServer:${maxPageFromServer}`)
+            setMinPagePagination(minPagePagination - 10)
+            setMaxPagePagination(maxPagePagination - 10)
+            if (maxPagePagination + 10 >= maxPageFromServer) {
+                setMinPagePagination(minPagePagination - 10)
+                setMaxPagePagination(minPagePagination - 1)
+                dispatch(getCardsPackForPaginationThunk(minPagePagination - 1))
+            }
+            if (maxPagePagination + 10 <= maxPageFromServer) {  //для перерисовки карточек, когда нажимаем стрелку
+                dispatch(getCardsPackForPaginationThunk(maxPagePagination - 10))
+            }
+        }
+
+        const rightArrowForPaginationHandler = () => {
+            if (minPagePagination + 10 >= 11) {  //для перерисовки карточек, когда нажимаем стрелку
+                dispatch(getCardsPackForPaginationThunk(minPagePagination + 10))
+            }
+            setMinPagePagination(minPagePagination + 10)
+            setMaxPagePagination(maxPagePagination + 10)
+            if (maxPagePagination + 10 >= maxPageFromServer) {
+                let maxPage = maxPagePagination - maxPageFromServer
+                setMaxPagePagination(maxPagePagination - maxPage)
+            }
+        }
 
         useEffect(() => {
             // CardsApi.GETCardsPack()
@@ -68,11 +104,11 @@ export const Profile = React.memo(() => {
                                     <td>{m.name}</td>
                                     <td>{m.cardsCount}</td>
                                     <td>
-                                        <button disabled={UserIdFromLocalStorage === m.user_id ? false : true}>UPDATE
+                                        <button disabled={UserIdFromLocalStorage === m.name ? false : true}>UPDATE
                                         </button>
                                     </td>
                                     <td>
-                                        <button disabled={UserIdFromLocalStorage === m.user_id ? false : true}>DELETE
+                                        <button disabled={UserIdFromLocalStorage === m.name ? false : true}>DELETE
                                         </button>
                                     </td>
 
@@ -80,13 +116,25 @@ export const Profile = React.memo(() => {
                             )
                         })}
                     </Table>
+
+
+                    <div className={style.generalForPagination}>
+                        <button className={style.arrowHover} onClick={leftArrowForPaginationHandler}
+                                disabled={minPagePagination == 1 ? true : false}>{`${`<`}`}</button>
+                        <Pagination  minPagePagination={minPagePagination} maxPagePagination={maxPagePagination}/>
+                        <button className={style.arrowHover} onClick={rightArrowForPaginationHandler}
+                                disabled={maxPagePagination >= maxPageFromServer ? true : false}> {`${`>`}`}</button>
+                    </div>
                 </div>
+
+
             </div>
+
         )
     }
 )
 
-//-------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // import React, {useEffect, useState} from 'react';
 // import style from './Profile.module.css'
@@ -94,22 +142,66 @@ export const Profile = React.memo(() => {
 // import {useDispatch, useSelector} from "react-redux";
 // import {AppStoreType} from "../redux/store";
 // import {Redirect} from "react-router-dom";
-// import {AddNewCardsPackThunk, getCardsPackThunk} from "../reducers/CardsPackReducer";
-// import {CardPacksType, userType} from "../API/CardsApi";
+// import {
+//     AddNewCardsPackThunk,
+//     getCardsPackForPaginationThunk,
+//     getCardsPackThunk,
+//     InitialCardsPackReducerType
+// } from "../reducers/CardsPackReducer";
 // import {Table} from "@material-ui/core";
 // import {ButtonComponentForCards} from "../components/ButtonComponentForCards";
+// import {Pagination} from "../components/Pagination";
 //
 //
 // export const Profile = React.memo(() => {
 //         let [userID, setUserID] = useState('')
 //         let dispatch = useDispatch()
-//         let cardsPack = useSelector<AppStoreType, Array<userType>>(state => state.cardsPack)
-//         // let cardsPack2 = useSelector<AppStoreType, CardPacksType>(state => state.cardsPack)
-//         console.log(cardsPack)
-//         let UserIdFromLocalStorage = localStorage.getItem('userId')
+//         let cardsPack = useSelector<AppStoreType, InitialCardsPackReducerType>(state => state.cardsPack)
+//         let maxPageFromServer = Math.ceil(cardsPack.cardPacksTotalCount / cardsPack.pageCount)//maxNumber of pages
 //
+//         let UserIdFromLocalStorage = localStorage.getItem('userId')//for disabled-enabled button
+//
+//
+//         let [minPagePagination, setMinPagePagination] = useState(1)//for pagination
+//         let [maxPagePagination, setMaxPagePagination] = useState(10)
+//
+//
+//
+//         const leftArrowForPaginationHandler = () => {
+//             console.log(`minPagePagination:${minPagePagination}`)
+//             console.log(`maxPagePagination:${maxPagePagination}`)
+//             console.log(`maxPageFromServer:${maxPageFromServer}`)
+//             setMinPagePagination(minPagePagination - 10)
+//             setMaxPagePagination(maxPagePagination - 10)
+//             if (maxPagePagination + 10 >= maxPageFromServer) {
+//                 setMinPagePagination(minPagePagination - 10)
+//                 setMaxPagePagination(minPagePagination - 1)
+//             }
+//             if (maxPagePagination + 10 <= maxPageFromServer) {  //для перерисовки карточек, когда нажимаем стрелку
+//                 dispatch(getCardsPackForPaginationThunk(maxPagePagination - 10))
+//             }
+//         }
+//
+//         const rightArrowForPaginationHandler = () => {
+//             if (minPagePagination + 10 >= 11) {  //для перерисовки карточек, когда нажимаем стрелку
+//                 dispatch(getCardsPackForPaginationThunk(minPagePagination + 10))
+//             }
+//             setMinPagePagination(minPagePagination + 10)
+//             setMaxPagePagination(maxPagePagination + 10)
+//             if (maxPagePagination + 10 >= maxPageFromServer) {
+//                 let maxPage = maxPagePagination - maxPageFromServer
+//                 setMaxPagePagination(maxPagePagination - maxPage)
+//             }
+//         }
 //
 //         useEffect(() => {
+//             // CardsApi.GETCardsPack()
+//             //     .then((res) => {
+//             //             // console.log(res.data)
+//             //             // dispatch(getCardsPackAC(res.data.cardPacks))
+//             //             // console.log(res.data)
+//             //         }
+//             //     )
 //             dispatch(getCardsPackThunk())
 //         }, [])
 //
@@ -141,7 +233,7 @@ export const Profile = React.memo(() => {
 //                             <td className={style.th}>UPDATE</td>
 //                             <td className={style.th}>DELETE</td>
 //                         </tr>
-//                         {cardsPack.map((m) => {
+//                         {cardsPack.cardPacks.map((m) => {
 //                             return (
 //                                 <tr>
 //                                     <td>{m._id}</td>
@@ -150,11 +242,11 @@ export const Profile = React.memo(() => {
 //                                     <td>{m.name}</td>
 //                                     <td>{m.cardsCount}</td>
 //                                     <td>
-//                                         <button disabled={UserIdFromLocalStorage === m.user_id ? false : true}>UPDATE
+//                                         <button disabled={UserIdFromLocalStorage === m.name ? false : true}>UPDATE
 //                                         </button>
 //                                     </td>
 //                                     <td>
-//                                         <button disabled={UserIdFromLocalStorage === m.user_id ? false : true}>DELETE
+//                                         <button disabled={UserIdFromLocalStorage === m.name ? false : true}>DELETE
 //                                         </button>
 //                                     </td>
 //
@@ -162,8 +254,21 @@ export const Profile = React.memo(() => {
 //                             )
 //                         })}
 //                     </Table>
+//
+//
+//                     <div>
+//                         <button onClick={leftArrowForPaginationHandler}
+//                                 disabled={minPagePagination == 1 ? true : false}>{`${`<`}`}</button>
+//                         <Pagination minPagePagination={minPagePagination} maxPagePagination={maxPagePagination}/>
+//                         <button onClick={rightArrowForPaginationHandler}
+//                                 disabled={maxPagePagination >= maxPageFromServer ? true : false}> {`${`>`}`}</button>
+//                     </div>
 //                 </div>
+//
+//
 //             </div>
+//
 //         )
 //     }
 // )
+
