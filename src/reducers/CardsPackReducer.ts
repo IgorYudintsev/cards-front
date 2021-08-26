@@ -38,8 +38,8 @@ const getCardsPackAC = (cardPacks: CardPacksType) => {
     return {type: 'GET-CARDS-PACK', cardPacks} as const
 }
 
-export const getCardsPackThunk = () => (dispatch: Dispatch) => {
-    CardsApi.GETCardsPack()
+export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName: string}) => (dispatch: Dispatch) => {
+    CardsApi.GETCardsPack(data)
         .then((res) => {
                 dispatch(getCardsPackAC(res.data))
                 // dispatch(getCardsPackAC(res.data.cardPacks))

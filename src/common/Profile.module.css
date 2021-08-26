@@ -19,6 +19,12 @@
     margin-left: 25px;
 }
 
+.boxNameInput {
+    margin-left: 55px;
+    color: white;
+}
+
+
 .table {
     color: white;
 }
@@ -31,12 +37,8 @@
     background-color: skyblue;
 }
 
-/*.paginationBlock{*/
-/*    margin-top: 25px;*/
-/*}*/
-
 .generalForPagination {
-     margin-top: 55px;
+    margin-top: 55px;
     background-color: #424242;
     height: 25px;
     width: 33%;
@@ -54,11 +56,11 @@
 }
 
 .ActivePaginationBlock:hover {
-      margin-top: 25px;
+    margin-top: 25px;
     color: white;
     cursor: pointer;
 }
 
-.arrowHover:hover{
+.arrowHover:hover {
     background-color: yellow;
-   }
+}

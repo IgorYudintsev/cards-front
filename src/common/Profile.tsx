@@ -13,6 +13,8 @@ import {
 import {Table} from "@material-ui/core";
 import {ButtonComponentForCards} from "../components/ButtonComponentForCards";
 import {Pagination} from "../components/Pagination";
+import Search from "../components/Search";
+import {setSearchValueAC} from "../reducers/SearchReducer";
 
 
 export const Profile = React.memo(() => {
@@ -20,7 +22,7 @@ export const Profile = React.memo(() => {
         let dispatch = useDispatch()
         let cardsPack = useSelector<AppStoreType, InitialCardsPackReducerType>(state => state.cardsPack)
         let maxPageFromServer = Math.ceil(cardsPack.cardPacksTotalCount / cardsPack.pageCount)//maxNumber of pages
-
+        let searchSelector = useSelector<AppStoreType, string>(state => state.search.search)//for search
         let UserIdFromLocalStorage = localStorage.getItem('userId')//for disabled-enabled button
 
         let [minPagePagination, setMinPagePagination] = useState(1)//for pagination
@@ -43,7 +45,6 @@ export const Profile = React.memo(() => {
                 dispatch(getCardsPackForPaginationThunk(maxPagePagination - 10))
             }
         }
-
         const rightArrowForPaginationHandler = () => {
             if (minPagePagination + 10 >= 11) {  //для перерисовки карточек, когда нажимаем стрелку
                 dispatch(getCardsPackForPaginationThunk(minPagePagination + 10))
@@ -64,8 +65,9 @@ export const Profile = React.memo(() => {
             //             // console.log(res.data)
             //         }
             //     )
-            dispatch(getCardsPackThunk())
-        }, [])
+
+            dispatch(getCardsPackThunk({cardsPack, pageCount: 10, packName: searchSelector}))
+        }, [searchSelector])
 
         dispatch(ButtonAC('Profile'))//for yellow button
         let loginTrue: any = useSelector<AppStoreType>(state => state.login);
@@ -85,7 +87,10 @@ export const Profile = React.memo(() => {
                 <div className={style.general}>
                     <tr><h1 className={style.header}>Users cards / PROFILE</h1></tr>
                     <Table className={style.table}>
-                        <ButtonComponentForCards title={'create CARDS pack'} callBack={AddNewCardsPack}/>
+                        <tr>
+                            <ButtonComponentForCards title={'create CARDS pack'} callBack={AddNewCardsPack}/>
+                            <Search setSearch={(value) => dispatch(setSearchValueAC(value))}/>
+                        </tr>
                         <tr className={style.tr}>
                             <td className={style.th}>id</td>
                             <td className={style.th}>user id</td>
@@ -121,7 +126,7 @@ export const Profile = React.memo(() => {
                     <div className={style.generalForPagination}>
                         <button className={style.arrowHover} onClick={leftArrowForPaginationHandler}
                                 disabled={minPagePagination == 1 ? true : false}>{`${`<`}`}</button>
-                        <Pagination  minPagePagination={minPagePagination} maxPagePagination={maxPagePagination}/>
+                        <Pagination minPagePagination={minPagePagination} maxPagePagination={maxPagePagination}/>
                         <button className={style.arrowHover} onClick={rightArrowForPaginationHandler}
                                 disabled={maxPagePagination >= maxPageFromServer ? true : false}> {`${`>`}`}</button>
                     </div>
