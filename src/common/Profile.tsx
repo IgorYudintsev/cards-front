@@ -15,6 +15,7 @@ import {ButtonComponentForCards} from "../components/ButtonComponentForCards";
 import {Pagination} from "../components/Pagination";
 import Search from "../components/Search";
 import {setSearchValueAC} from "../reducers/SearchReducer";
+import {DoubleRange} from "../components/DoubleRange";
 
 
 export const Profile = React.memo(() => {
@@ -87,39 +88,43 @@ export const Profile = React.memo(() => {
                 <div className={style.general}>
                     <tr><h1 className={style.header}>Users cards / PROFILE</h1></tr>
                     <Table className={style.table}>
-                        <tr>
+                        <div className={style.headerCase}>
                             <ButtonComponentForCards title={'create CARDS pack'} callBack={AddNewCardsPack}/>
                             <Search setSearch={(value) => dispatch(setSearchValueAC(value))}/>
-                        </tr>
-                        <tr className={style.tr}>
-                            <td className={style.th}>id</td>
-                            <td className={style.th}>user id</td>
-                            <td className={style.th}>created</td>
-                            <td className={style.th}>name</td>
-                            <td className={style.th}>cardsCount</td>
-                            <td className={style.th}>UPDATE</td>
-                            <td className={style.th}>DELETE</td>
-                        </tr>
-                        {cardsPack.cardPacks.map((m) => {
-                            return (
-                                <tr>
-                                    <td>{m._id}</td>
-                                    <td>{m.user_id}</td>
-                                    <td>{m.created}</td>
-                                    <td>{m.name}</td>
-                                    <td>{m.cardsCount}</td>
-                                    <td>
-                                        <button disabled={UserIdFromLocalStorage === m.name ? false : true}>UPDATE
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button disabled={UserIdFromLocalStorage === m.name ? false : true}>DELETE
-                                        </button>
-                                    </td>
+                            <DoubleRange min={0} max={100}/>
+                        </div>
 
-                                </tr>
-                            )
-                        })}
+                        <div >
+                            <tr>
+                                <th className={style.td1}>id</th>
+                                <th className={style.td1}>user id</th>
+                                <th className={style.td1}>created</th>
+                                <th className={style.td3}>name</th>
+                                <th className={style.td2}>cardsCount</th>
+                                <th className={style.td2}>UPDATE</th>
+                                <th className={style.td2}>DELETE</th>
+                            </tr>
+
+                            {cardsPack.cardPacks.map((m) => {
+                                return (
+                                    <tr>
+                                        <td className={style.td1}>{m._id}</td>
+                                        <td className={style.td1}>{m.user_id}</td>
+                                        <td className={style.td1}>{m.created}</td>
+                                        <td className={style.td3}>{m.name}</td>
+                                        <td>{m.cardsCount}</td>
+                                        <td>
+                                            <button disabled={UserIdFromLocalStorage === m.name ? false : true}>UPDATE
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button disabled={UserIdFromLocalStorage === m.name ? false : true}>DELETE
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                )
+                            })}</div>
                     </Table>
 
 

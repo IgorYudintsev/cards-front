@@ -11,7 +11,7 @@
     background-color: dimgrey;
     border: #282c34 1px solid;
     width: 95%;
-    height: 600px;
+    height: 750px;
 }
 
 .header {
@@ -19,22 +19,52 @@
     margin-left: 25px;
 }
 
-.boxNameInput {
-    margin-left: 55px;
-    color: white;
+.headerCase {
+    display: flex;
+    margin-bottom: 50px;
 }
 
+.search {
+    margin-top: 12px;
+    margin-left: 55px;
+    height: 28px;
+}
+
+.range {
+    margin-left: 55px;
+    width: 155px;
+  }
 
 .table {
+    margin-top: 25px;
     color: white;
+    /*width: 95%;*/
 }
 
-.th {
+td {
     border: #282c34 1px solid;
+}
+
+
+.td1 {
+width: 20%;
+}
+
+.td2 {
+    width: 10%;
+}
+.td3 {
+    width: 15%;
 }
 
 .table tr:nth-child(even) {
     background-color: skyblue;
+    width: 100px;
+}
+
+th{
+    background-color: #424242;
+    border: white solid 1px;
 }
 
 .generalForPagination {
@@ -49,6 +79,7 @@
     color: white;
     cursor: pointer;
 }
+
 
 .ActivePaginationBlock {
     color: yellow;

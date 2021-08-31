@@ -38,14 +38,24 @@ const getCardsPackAC = (cardPacks: CardPacksType) => {
     return {type: 'GET-CARDS-PACK', cardPacks} as const
 }
 
-export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName: string}) => (dispatch: Dispatch) => {
+export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName?: string,min?:number,max?:number}) => (dispatch: Dispatch) => {
     CardsApi.GETCardsPack(data)
         .then((res) => {
+            console.log(res.data)
                 dispatch(getCardsPackAC(res.data))
                 // dispatch(getCardsPackAC(res.data.cardPacks))
             }
         )
 }
+// export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName: string}) => (dispatch: Dispatch) => {
+//     CardsApi.GETCardsPack(data)
+//         .then((res) => {
+//                 dispatch(getCardsPackAC(res.data))
+//                 // dispatch(getCardsPackAC(res.data.cardPacks))
+//             }
+//         )
+// }
+
 
 type AddNewCardsPackACType = ReturnType<typeof AddNewCardsPackAC>
 export const AddNewCardsPackAC = (cardPacks: Array<userType>) => {
