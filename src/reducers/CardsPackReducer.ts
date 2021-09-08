@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
 import {CardPacksType, CardsApi, SearchParamsType, userType} from "../API/CardsApi";
+import {preloaderAC} from "./PreloaderReducer";
 
 let initialState = {
     cardPacks: [] as Array<userType>,
@@ -38,34 +39,29 @@ const getCardsPackAC = (cardPacks: CardPacksType) => {
     return {type: 'GET-CARDS-PACK', cardPacks} as const
 }
 
-export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName?: string,min?:number,max?:number}) => (dispatch: Dispatch) => {
+export const getCardsPackThunk = (data: { cardsPack: CardPacksType, pageCount: number, packName?: string, min?: number, max?: number }) => (dispatch: Dispatch) => {
+    dispatch(preloaderAC(true))
     CardsApi.GETCardsPack(data)
         .then((res) => {
-            console.log(res.data)
+                console.log(res.data)
                 dispatch(getCardsPackAC(res.data))
                 // dispatch(getCardsPackAC(res.data.cardPacks))
+                dispatch(preloaderAC(false))
             }
         )
 }
-// export const getCardsPackThunk = (data:{cardsPack:CardPacksType,pageCount:number, packName: string}) => (dispatch: Dispatch) => {
-//     CardsApi.GETCardsPack(data)
-//         .then((res) => {
-//                 dispatch(getCardsPackAC(res.data))
-//                 // dispatch(getCardsPackAC(res.data.cardPacks))
-//             }
-//         )
-// }
-
 
 type AddNewCardsPackACType = ReturnType<typeof AddNewCardsPackAC>
 export const AddNewCardsPackAC = (cardPacks: Array<userType>) => {
     return {type: 'CREATE-CARDS-PACK', cardPacks} as const
 }
 export const AddNewCardsPackThunk = (setUserID: (setUser: string) => void) => (dispatch: Dispatch) => {
+    dispatch(preloaderAC(true))
     CardsApi.AddNewCardsPack().then((res) => {
         setUserID(res.data.newCardsPack.user_id);
         localStorage.setItem('userId', res.data.newCardsPack.name)// userId-менялся, поэтому заменили на name, но название ключа оставили
         dispatch(AddNewCardsPackAC(res.data.newCardsPack))
+        dispatch(preloaderAC(false))
     })
 }
 
@@ -75,6 +71,7 @@ export const getCardsPackForPaginationAC = (data: CardPacksType) => {
 }
 
 export const getCardsPackForPaginationThunk = (pageOfPagination: number) => (dispatch: Dispatch) => {
+    dispatch(preloaderAC(true))
     let pagePageCount = {
         page: pageOfPagination,
         pageCount: 10,
@@ -82,6 +79,7 @@ export const getCardsPackForPaginationThunk = (pageOfPagination: number) => (dis
     CardsApi.GETCardsPackForPagination(pagePageCount).then((res) => {
             // console.log(res.data)
             dispatch(getCardsPackForPaginationAC(res.data))
+            dispatch(preloaderAC(false))
         }
     )
 

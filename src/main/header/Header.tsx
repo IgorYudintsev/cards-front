@@ -6,10 +6,12 @@ import {AuthLoginThunk, LogOutThunk} from "../../reducers/LoginReducer";
 import {Redirect} from "react-router-dom";
 import {ButtonAC} from "../../reducers/ButtonReducer";
 import {AppStoreType} from "../../redux/store";
+import {LinearProgress} from "@material-ui/core";
 
 export const Header = () => {
     let [LogOUT, setLogOUT] = useState(false)
     let LoginData = useSelector<AppStoreType, any[]>(state => state.login)
+    let setPreloader=useSelector<AppStoreType,boolean>(state => state.preloader)
     let dispatch = useDispatch();
     let [colorButton, setColorButton] = useState('')
     const changeButtonColor = (titleColor: string) => {
@@ -45,6 +47,7 @@ export const Header = () => {
             {/*<ButtonComponent title={'RecoveryPassword'} to={'/newPas'} changeButtonColor={changeButtonColor}*/}
             {/*                 colorButton={colorButton}/>*/}
             {LogOUT && <span onClick={logOiutHandler} className={styles.logOut}>LogOUT</span>}
+            { setPreloader &&<LinearProgress color="secondary" />}
         </div>
     )
 }
