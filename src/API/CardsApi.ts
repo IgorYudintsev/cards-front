@@ -16,8 +16,17 @@ export const CardsApi = {
     AddNewCardsPack: () => {
         return instance.post('cards/pack', {cardsPack: {name:'It-patsan'}})
     },
+    DeleteCardsPack:(id:string)=>{
+        return instance.delete<DeleteCardsPackType>(`cards/pack?id=${id}`)
+    },
 }
 
+
+export type DeleteCardsPackType={
+    deletedCardsPack:userType
+      token: string
+    tokenDeathTime: number
+}
 
 export type userType = {
     cardsCount: number

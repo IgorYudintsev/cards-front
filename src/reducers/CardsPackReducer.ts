@@ -24,6 +24,16 @@ export const CardsPackReducer = (state = initialState, action: GeneralType) => {
                 cardPacks: [action.cardPacks, ...state.cardPacks]
             }
         }
+        case "DELETE-CARDS-PACK": {
+            let newState = {...state}
+            console.log(newState)
+            // return newState.cardPacks.filter(f => f._id !== action.id)
+            return {
+                ...state,
+                cardPacks: state.cardPacks.filter(f=>f._id!==action.id)
+            }
+            // return newState
+        }
         case "GET-CARDS-PACK-PAGINATION": {
             return {...state} = action.data
         }
@@ -32,7 +42,7 @@ export const CardsPackReducer = (state = initialState, action: GeneralType) => {
     }
 }
 
-type GeneralType = getCardsPackACType | AddNewCardsPackACType | getCardsPackForPaginationACType
+type GeneralType = getCardsPackACType | AddNewCardsPackACType | getCardsPackForPaginationACType | DeleteCardsPackACType
 
 type getCardsPackACType = ReturnType<typeof getCardsPackAC>
 const getCardsPackAC = (cardPacks: CardPacksType) => {
@@ -43,7 +53,6 @@ export const getCardsPackThunk = (data: { cardsPack: CardPacksType, pageCount: n
     dispatch(preloaderAC(true))
     CardsApi.GETCardsPack(data)
         .then((res) => {
-                console.log(res.data)
                 dispatch(getCardsPackAC(res.data))
                 // dispatch(getCardsPackAC(res.data.cardPacks))
                 dispatch(preloaderAC(false))
@@ -69,7 +78,6 @@ export type getCardsPackForPaginationACType = ReturnType<typeof getCardsPackForP
 export const getCardsPackForPaginationAC = (data: CardPacksType) => {
     return {type: 'GET-CARDS-PACK-PAGINATION', data} as const
 }
-
 export const getCardsPackForPaginationThunk = (pageOfPagination: number) => (dispatch: Dispatch) => {
     dispatch(preloaderAC(true))
     let pagePageCount = {
@@ -83,4 +91,21 @@ export const getCardsPackForPaginationThunk = (pageOfPagination: number) => (dis
         }
     )
 
+}
+
+export type DeleteCardsPackACType = ReturnType<typeof DeleteCardsPackAC>
+export const DeleteCardsPackAC = (id: string) => {
+    return {
+        type: "DELETE-CARDS-PACK",
+        id
+    } as const
+}
+
+export const DeleteCardsPackThunk = (mID: string) => (dispatch: Dispatch) => {
+    CardsApi.DeleteCardsPack(mID)
+        .then((res) => {
+                // console.log(res.data.deletedCardsPack._id)
+                dispatch(DeleteCardsPackAC(res.data.deletedCardsPack._id))
+            }
+        )
 }

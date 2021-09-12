@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../redux/store";
 import {Redirect} from "react-router-dom";
 import {
-    AddNewCardsPackThunk,
+    AddNewCardsPackThunk, DeleteCardsPackThunk,
     getCardsPackForPaginationThunk,
     getCardsPackThunk,
     InitialCardsPackReducerType
@@ -78,10 +78,12 @@ export const Profile = React.memo(() => {
         }
 
         const AddNewCardsPack = () => {
-            console.log(userID)
             dispatch(AddNewCardsPackThunk(setUserID))
         }
 
+        const onClickDeleteHandler = (mID:string) => {
+                      dispatch(DeleteCardsPackThunk(mID))
+        }
 
         return (
             <div className={style.generalDiv}>
@@ -94,7 +96,7 @@ export const Profile = React.memo(() => {
                             <DoubleRange min={0} max={100}/>
                         </div>
 
-                        <div >
+                        <div>
                             <tr>
                                 <th className={style.td1}>id</th>
                                 <th className={style.td1}>user id</th>
@@ -118,8 +120,8 @@ export const Profile = React.memo(() => {
                                             </button>
                                         </td>
                                         <td>
-                                            <button disabled={UserIdFromLocalStorage === m.name ? false : true}>DELETE
-                                            </button>
+                                            <button disabled={UserIdFromLocalStorage === m.name ? false : true}
+                                                    onClick={()=>onClickDeleteHandler(m._id)}>DELETE</button>
                                         </td>
 
                                     </tr>
